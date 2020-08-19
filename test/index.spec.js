@@ -3,44 +3,92 @@ import 'mocha-sinon';
 
 import { BatchingTransaction } from '../bin';
 
-describe('your test cases', () => {
+const sleep = async (time = 1e3) => new Promise(res => setTimeout(res, time));
+
+describe('task-batching test cases', () => {
   beforeEach(function () {
     this.sinon.stub(console, 'info');
   });
 
-  it('should run correctly', done => {
-    const TaskBatching = new BatchingTransaction();
-    TaskBatching.perform(() => {
-      TaskBatching.pushSideEffect(() => {
-        console.info('after 1 1');
-      });
-      TaskBatching.pushSideEffect(() => {
-        console.info('after 1 2');
-      });
-      console.info('fn 1');
+  it('basic functionality', done => {
+    const result = [];
 
-      TaskBatching.perform(() => {
-        console.info('fn 2');
+    const TaskBatching = new BatchingTransaction();
+    TaskBatching.batching(() => {
+      TaskBatching.pushSideEffect(() => {
+        result.push('after 1 1');
+      });
+      TaskBatching.pushSideEffect(() => {
+        result.push('after 1 2');
+      });
+      result.push('fn 1');
+
+      TaskBatching.batching(() => {
+        result.push('fn 2');
         TaskBatching.pushSideEffect(() => {
-          console.info('after 2 1');
+          result.push('after 2 1');
         });
 
-        TaskBatching.perform(() => {
+        TaskBatching.batching(() => {
           TaskBatching.pushSideEffect(() => {
-            console.info('after 3 1');
+            result.push('after 3 1');
           });
-          console.info('fn 3');
+          result.push('fn 3');
         });
       });
     });
+
     // expect(console.info.calledThrice).to.be.true;
-    expect(console.info.calledWith('fn 1')).to.be.true;
-    expect(console.info.calledWith('fn 2')).to.be.true;
-    expect(console.info.calledWith('fn 3')).to.be.true;
-    expect(console.info.calledWith('after 1 1')).to.be.true;
-    expect(console.info.calledWith('after 1 2')).to.be.true;
-    expect(console.info.calledWith('after 2 1')).to.be.true;
-    expect(console.info.calledWith('after 3 1')).to.be.true;
+    // expect(console.info.calledWith('fn 1')).to.be.true;
+    expect(result.length).to.equal(7);
+    expect(result[0]).to.equal('fn 1');
+    expect(result[1]).to.equal('fn 2');
+    expect(result[2]).to.equal('fn 3');
+    expect(result[3]).to.equal('after 1 1');
+    expect(result[4]).to.equal('after 1 2');
+    expect(result[5]).to.equal('after 2 1');
+    expect(result[6]).to.equal('after 3 1');
     done();
+  });
+
+  it('async scene', done => {
+    (async function () {
+      const result = [];
+
+      const TaskBatching = new BatchingTransaction();
+      await TaskBatching.batchingAsync(async () => {
+        TaskBatching.pushSideEffect(async () => {
+          result.push('after 1 1');
+        });
+        TaskBatching.pushSideEffect(async () => {
+          result.push('after 1 2');
+        });
+        result.push('fn 1');
+
+        TaskBatching.batchingAsync(async () => {
+          result.push('fn 2');
+          TaskBatching.pushSideEffect(async () => {
+            result.push('after 2 1');
+          });
+
+          TaskBatching.batchingAsync(async () => {
+            TaskBatching.pushSideEffect(async () => {
+              result.push('after 3 1');
+            });
+            result.push('fn 3');
+          });
+        });
+      });
+
+      expect(result.length).to.equal(7);
+      expect(result[0]).to.equal('fn 1');
+      expect(result[1]).to.equal('fn 2');
+      expect(result[2]).to.equal('fn 3');
+      expect(result[3]).to.equal('after 1 1');
+      expect(result[4]).to.equal('after 1 2');
+      expect(result[5]).to.equal('after 2 1');
+      expect(result[6]).to.equal('after 3 1');
+      done();
+    })()
   });
 });

@@ -14,9 +14,9 @@ export class BatchingAspect implements Aspect {
     this.sideEffects.push(sideEffect);
   }
 
-  public before(): void {}
+  public async before(): Promise<void> {}
 
-  public after(): void {
+  public async after(): Promise<void> {
     for (const effect of this.sideEffects) {
       effect();
     }
@@ -24,7 +24,9 @@ export class BatchingAspect implements Aspect {
   }
 }
 
-export class BatchingTransaction extends Transaction {
+export class BatchingTransaction<
+  T extends AnyFunction = AnyFunction
+> extends Transaction<T> {
   private batchingAspect: BatchingAspect;
 
   constructor() {
@@ -37,13 +39,27 @@ export class BatchingTransaction extends Transaction {
     this.batchingAspect.pushSideEffect(sideEffect);
   }
 
-  public batching<T extends AnyFunction>(fn: T, scope: unknown, ...args: Array<unknown>): void {
+  public batching(fn: T, scope: unknown, ...args: Array<unknown>): void {
     const { performing } = this;
     this.performing = true;
     if (performing) {
       return fn.apply(scope, args);
     } else {
       this.perform(fn, scope, ...args);
+    }
+  }
+
+  public async batchingAsync(
+    fn: T,
+    scope: unknown,
+    ...args: Array<unknown>
+  ): Promise<void> {
+    const { performing } = this;
+    this.performing = true;
+    if (performing) {
+      return await fn.apply(scope, args);
+    } else {
+      await this.performAsync(fn, scope, ...args);
     }
   }
 }

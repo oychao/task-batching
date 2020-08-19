@@ -1,6 +1,6 @@
 {
   "name": "task-batching",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.1",
   "main": "./bin/index.js",
   "typings": "./bin/index.d.ts",
   "author": {
@@ -33,7 +33,7 @@
     "watch": "npm-watch build"
   },
   "devDependencies": {
-    "@types/node": "^14.0.27",
+    "@types/node": "^14.6.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-polyfill": "^6.26.0",
@@ -42,10 +42,10 @@
     "chai": "^4.2.0",
     "mocha": "^8.1.1",
     "mocha-sinon": "^2.1.2",
-    "npm-watch": "^0.6.0",
-    "rollup": "^2.23.1",
+    "npm-watch": "^0.7.0",
+    "rollup": "^2.26.3",
     "rollup-plugin-typescript2": "^0.27.2",
-    "sinon": "^9.0.2",
+    "sinon": "^9.0.3",
     "typescript": "^3.9.7",
     "typescript-transform-paths": "^2.0.0"
   },
