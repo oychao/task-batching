@@ -35,14 +35,12 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
   public perform(fn: T, scope: unknown, ...args: Array<unknown>) {
     this.performing = true;
     this.beforeAll();
-    const befores = this.aspects.map(({ before }) => before);
-    const afters = this.aspects.map(({ after }) => after);
-    for (const before of befores) {
-      before();
+    for (const aspect of this.aspects) {
+      aspect.before();
     }
     fn.apply(scope, args);
-    for (const after of afters) {
-      after();
+    for (const aspect of this.aspects) {
+      aspect.after();
     }
     this.afterAll();
     this.performing = false;
@@ -54,14 +52,12 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
     ...args: Array<unknown>
   ) {
     this.beforeAll();
-    const befores = this.aspects.map(({ before }) => before);
-    const afters = this.aspects.map(({ after }) => after);
-    for (const before of befores) {
-      await before();
+    for (const aspect of this.aspects) {
+      await aspect.before();
     }
     await fn.apply(scope, args);
-    for (const after of afters) {
-      await after();
+    for (const aspect of this.aspects) {
+      await aspect.after();
     }
     await this.afterAll();
     this.performing = false;
