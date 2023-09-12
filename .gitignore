@@ -2,4 +2,3 @@
 bin
 node_modules
 yarn*
-package-lock.json

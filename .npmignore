@@ -6,5 +6,4 @@ node_modules
 .travis.yml
 index.js
 package-lock.json
-rollup.config.js
 yarn*

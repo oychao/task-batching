@@ -1,8 +1,9 @@
 {
   "name": "task-batching",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "main": "./bin/index.js",
   "typings": "./bin/index.d.ts",
+  "type": "module",
   "author": {
     "name": "ouyang-chao",
     "email": "chao@ouyang.io"
@@ -26,28 +27,24 @@
   },
   "scripts": {
     "build": "npm run build:tsc",
-    "build:tsc": "rm -rf bin && tsc",
-    "build:rollup": "rm -rf bin && rollup -c",
+    "build:tsc": "rm -rf bin && tsc && tsc-alias",
     "test": "mocha --require babel-register --require babel-polyfill test/**/*.spec.js",
-    "prepare": "npm run build",
     "watch": "npm-watch build"
   },
   "devDependencies": {
-    "@types/node": "^14.6.0",
+    "@types/node": "^20.4.8",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "chai": "^4.2.0",
-    "mocha": "^8.1.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "mocha-sinon": "^2.1.2",
-    "npm-watch": "^0.7.0",
-    "rollup": "^2.26.3",
-    "rollup-plugin-typescript2": "^0.27.2",
-    "sinon": "^9.0.3",
-    "typescript": "^3.9.7",
-    "typescript-transform-paths": "^2.0.0"
-  },
-  "dependencies": {}
+    "npm-watch": "^0.11.0",
+    "sinon": "^15.2.0",
+    "tsc-alias": "^1.8.7",
+    "typescript": "^5.1.6",
+    "typescript-transform-paths": "^3.4.6"
+  }
 }

@@ -4,7 +4,8 @@
     "baseUrl": "src",
     "outDir": "bin",
     "sourceMap": true,
-    "module": "esnext",
+    "module": "ESNext",
+    "target": "ESNext",
     "lib": ["es7", "dom"],
     "jsx": "react",
     "moduleResolution": "node",
@@ -17,7 +18,6 @@
     "noImplicitThis": false,
     "importHelpers": true,
     "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "declaration": true,
     "plugins": [
@@ -30,6 +30,6 @@
       }
     ]
   },
-  "exclude": ["node_modules", "build", "*.js", "bin/*.d.ts", "demo"],
+  "exclude": ["node_modules", "*.js", "bin/*.d.ts", "demo"],
   "typeRoots": ["node", "node_modules/@types", "./typings"]
 }
