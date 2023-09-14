@@ -1,6 +1,6 @@
 {
   "name": "task-batching",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "main": "./bin/index.js",
   "typings": "./bin/index.d.ts",
   "type": "module",
@@ -15,7 +15,8 @@
   "files": [
     "LICENSE.md",
     "README.md",
-    "bin/"
+    "bin/",
+    "src/"
   ],
   "watch": {
     "build": {
