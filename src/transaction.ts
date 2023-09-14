@@ -33,6 +33,10 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
   }
 
   public perform(fn: T, scope: unknown, ...args: Array<unknown>) {
+    if (this.performing) {
+      fn.apply(scope, args);
+    }
+
     this.performing = true;
     this.beforeAll();
     for (const aspect of this.aspects) {
@@ -51,6 +55,11 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
     scope: unknown,
     ...args: Array<unknown>
   ) {
+    if (this.performing) {
+      await fn.apply(scope, args);
+    }
+
+    this.performing = true;
     this.beforeAll();
     for (const aspect of this.aspects) {
       await aspect.before();
