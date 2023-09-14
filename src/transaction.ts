@@ -1,4 +1,4 @@
-import { AnyFunction, Aspect, AnyAsyncFunction } from './types';
+import { AnyAsyncFunction, AnyFunction, Aspect } from './types';
 
 export abstract class Transaction<T extends AnyFunction = AnyFunction> {
   private aspects: Array<Aspect>;
@@ -35,6 +35,7 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
   public perform(fn: T, scope: unknown, ...args: Array<unknown>) {
     if (this.performing) {
       fn.apply(scope, args);
+      return;
     }
 
     this.performing = true;
@@ -57,6 +58,7 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
   ) {
     if (this.performing) {
       await fn.apply(scope, args);
+      return;
     }
 
     this.performing = true;
