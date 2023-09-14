@@ -1,6 +1,6 @@
 {
   "name": "task-batching",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "main": "./bin/index.js",
   "typings": "./bin/index.d.ts",
   "type": "module",
@@ -29,7 +29,8 @@
     "build": "npm run build:tsc",
     "build:tsc": "rm -rf bin && tsc && tsc-alias",
     "test": "mocha --require babel-register --require babel-polyfill test/**/*.spec.js",
-    "watch": "npm-watch build"
+    "watch": "npm-watch build",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.4.8",
