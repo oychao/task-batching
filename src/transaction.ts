@@ -38,16 +38,18 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
       return;
     }
 
+    const context: Map<any, any> = new Map();
+
     this.performing = true;
-    this.beforeAll();
+    this.beforeAll(context);
     for (const aspect of this.aspects) {
-      aspect.before();
+      aspect.before(context);
     }
     fn.apply(scope, args);
     for (const aspect of this.aspects) {
-      aspect.after();
+      aspect.after(context);
     }
-    this.afterAll();
+    this.afterAll(context);
     this.performing = false;
   }
 
@@ -61,16 +63,18 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
       return;
     }
 
+    const context: Map<any, any> = new Map();
+
     this.performing = true;
-    this.beforeAll();
+    this.beforeAll(context);
     for (const aspect of this.aspects) {
-      await aspect.before();
+      await aspect.before(context);
     }
     await fn.apply(scope, args);
     for (const aspect of this.aspects) {
-      await aspect.after();
+      await aspect.after(context);
     }
-    await this.afterAll();
+    await this.afterAll(context);
     this.performing = false;
   }
 }
