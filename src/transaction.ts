@@ -40,17 +40,17 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
 
     const context: Map<any, any> = new Map();
 
-    this.performing = true;
     this.beforeAll(context);
     for (const aspect of this.aspects) {
       aspect.before(context);
     }
+    this.performing = true;
     fn.apply(scope, args);
+    this.performing = false;
     for (const aspect of this.aspects) {
       aspect.after(context);
     }
     this.afterAll(context);
-    this.performing = false;
   }
 
   public async performAsync<T extends AnyAsyncFunction>(
@@ -65,16 +65,16 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
 
     const context: Map<any, any> = new Map();
 
-    this.performing = true;
     this.beforeAll(context);
     for (const aspect of this.aspects) {
       await aspect.before(context);
     }
+    this.performing = true;
     await fn.apply(scope, args);
+    this.performing = false;
     for (const aspect of this.aspects) {
       await aspect.after(context);
     }
     await this.afterAll(context);
-    this.performing = false;
   }
 }
