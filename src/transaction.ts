@@ -65,16 +65,16 @@ export abstract class Transaction<T extends AnyFunction = AnyFunction> {
 
     const context: Map<any, any> = new Map();
 
+    this.performing = true;
     this.beforeAll(context);
     for (const aspect of this.aspects) {
       await aspect.before(context);
     }
-    this.performing = true;
     await fn.apply(scope, args);
-    this.performing = false;
     for (const aspect of this.aspects) {
       await aspect.after(context);
     }
     await this.afterAll(context);
+    this.performing = false;
   }
 }

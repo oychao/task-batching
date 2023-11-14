@@ -1,6 +1,6 @@
 {
   "name": "task-batching",
-  "version": "0.0.1-alpha.9",
+  "version": "0.0.1-alpha.10",
   "main": "./bin/index.js",
   "typings": "./bin/index.d.ts",
   "type": "module",
